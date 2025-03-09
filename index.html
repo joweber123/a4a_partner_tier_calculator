@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automattic for Agencies Partner Tier Calculator</title>
+    <style>
+        :root {
+            --primary-color: #1590c7;
+            --secondary-color: #117ac9;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #021a24;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        h1{
+            color: white;
+        }
+        a{
+            color: var(--primary-color);
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .product-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: var(--light-bg);
+        }
+        .product-group h3 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        .product-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        label {
+            font-weight: 500;
+            margin-right: 10px;
+            flex: 1;
+            min-width: 200px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 120px;
+        }
+        .tier-status {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .tier {
+            flex: 1;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            position: relative;
+        }
+        .tier.active {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+        }
+        .tier.active::before {
+            content: "✓";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--success-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .tier h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+        .tier-requirement {
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: var(--light-bg);
+        }
+        .tier-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-activated {
+            background-color: #6c757d;
+        }
+        .badge-partner {
+            background-color: #022837;
+        }
+        .badge-pro {
+            background-color: #114e30;
+        }
+    </style>
+</head>
+<body>
+    <h1>Automattic for Agencies Partner Tier Calculator</h1>
+    
+    <div class="calculator">
+        <div id="detailed-results">
+            <table id="detail-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Annual Revenue</th>
+                        <th>IAR Contribution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Will be populated by JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total Influenced Revenue</strong></td>
+                        <td id="total-iar"><strong>$0</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div class="tier-status" style="margin: 30px 0;">
+            <div class="tier" id="activated-tier">
+                <span class="tier-badge badge-activated">Account Activated</span>
+                <h3>Account Activated</h3>
+                <p class="tier-requirement">Minimum Requirement: <br>At least one product purchase or referral per year</p>
+            </div>
+            
+            <div class="tier" id="partner-tier">
+                <span class="tier-badge badge-partner">Partner</span>
+                <h3>Agency Partner</h3>
+                <p class="tier-requirement">Minimum Requirement: <br>$1,200+ annual IAR</p>
+            </div>
+            
+            <div class="tier" id="pro-tier">
+                <span class="tier-badge badge-pro">Pro</span>
+                <h3>Pro Partner</h3>
+                <p class="tier-requirement">Minimum Requirement: <br>$5,000+ annual IAR</p>
+            </div>
+        </div>
+        
+        <h2>Product Selection</h2>
+        
+        <div class="product-group">
+            <h3>WordPress.com / Pressable Hosting</h3>
+            
+            <div class="product-row">
+                <label for="wpcom-sites">WordPress.com Sites:</label>
+                <input type="number" id="wpcom-sites" min="0" value="0">
+            </div>
+            
+            <div class="product-row">
+                <label for="pressable-plan">Pressable Plan:</label>
+                <select id="pressable-plan" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; width: 120px;">
+                    <option value="0">None</option>
+                    <option value="1">1-Site ($25/month)</option>
+                    <option value="3">3-Sites ($45/month)</option>
+                    <option value="5">5-Sites ($60/month)</option>
+                    <option value="10">10-Sites ($90/month)</option>
+                    <option value="20">20-Sites ($155/month)</option>
+                    <option value="50">50-Sites ($350/month)</option>
+                    <option value="80">80-Sites ($545/month)</option>
+                    <option value="100">100-Sites ($675/month)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="product-group">
+            <h3>WooCommerce Payments</h3>
+            
+            <div class="product-row">
+                <label for="woopayments-tpv-per-site">WooPayments TPV per site (annually):</label>
+                <input type="number" id="woopayments-tpv-per-site" min="0" value="0" step="1000">
+                <span>($)</span>
+            </div>
+            <div class="product-row">
+                <label for="woopayments-sites">Number of WooPayments sites:</label>
+                <input type="number" id="woopayments-sites" min="0" value="0">
+                <span>sites</span>
+            </div>
+        </div>
+        
+        <div class="product-group">
+            <h3>WooCommerce Extensions</h3>
+            
+            <div class="product-row">
+                <label for="woo-subscriptions">WooCommerce Subscriptions:</label>
+                <input type="number" id="woo-subscriptions" min="0" value="0">
+                <span>($199/year per license)</span>
+            </div>
+            
+            <div class="product-row">
+                <label for="woo-bookings">WooCommerce Bookings:</label>
+                <input type="number" id="woo-bookings" min="0" value="0">
+                <span>($249/year per license)</span>
+            </div>
+        </div>
+        
+        <div class="product-group">
+            <h3>Jetpack Products</h3>
+            
+            <div class="product-row">
+                <label for="jetpack-complete">Jetpack Complete Licenses:</label>
+                <input type="number" id="jetpack-complete" min="0" value="0">
+                <span>($299/year per license)</span>
+            </div>
+            
+            <div class="product-row">
+                <label for="jetpack-security">Jetpack Security Licenses:</label>
+                <input type="number" id="jetpack-security" min="0" value="0">
+                <span>($199/year per license)</span>
+            </div>
+            
+            <div class="product-row">
+                <label for="jetpack-boost">Jetpack Boost Licenses:</label>
+                <input type="number" id="jetpack-boost" min="0" value="0">
+                <span>($49/year per license)</span>
+            </div>
+        </div>
+        <p>More information on partner tiers <a href="https://agencieshelp.automattic.com/knowledge-base/agency-tiering-benefits/" target="_blank" rel="noopener noreferrer">here.</a></p>
+    </div>
+    
+    <script>
+        function calculateRevenue() {
+            // Get all the input values
+            const wpcomSites = parseInt(document.getElementById('wpcom-sites').value) || 0;
+            const pressablePlan = document.getElementById('pressable-plan').value;
+            const jetpackComplete = parseInt(document.getElementById('jetpack-complete').value) || 0;
+            const jetpackSecurity = parseInt(document.getElementById('jetpack-security').value) || 0;
+            const jetpackBoost = parseInt(document.getElementById('jetpack-boost').value) || 0;
+            const wooSubscriptions = parseInt(document.getElementById('woo-subscriptions').value) || 0;
+            const wooBookings = parseInt(document.getElementById('woo-bookings').value) || 0;
+            const wooPaymentsTPVPerSite = parseInt(document.getElementById('woopayments-tpv-per-site').value) || 0;
+            const wooPaymentsSites = parseInt(document.getElementById('woopayments-sites').value) || 0;
+            const wooPaymentsTPV = wooPaymentsTPVPerSite * wooPaymentsSites;
+            
+            // Calculate revenue for each product
+            let wpcomRevenue = 0;
+            if (wpcomSites > 0) {
+                if (wpcomSites === 1) wpcomRevenue = 25 * 12;
+                else if (wpcomSites === 2) wpcomRevenue = 50 * 12;
+                else if (wpcomSites === 3) wpcomRevenue = 50 * 12;
+                else if (wpcomSites === 4) wpcomRevenue = 60 * 12;
+                else if (wpcomSites === 5) wpcomRevenue = 62.5 * 12;
+                else if (wpcomSites === 6) wpcomRevenue = 70 * 12;
+                else if (wpcomSites === 7) wpcomRevenue = 77 * 12;
+                else if (wpcomSites === 8) wpcomRevenue = 80 * 12;
+                else if (wpcomSites === 9) wpcomRevenue = 84 * 12;
+                else if (wpcomSites === 10) wpcomRevenue = 85 * 12;
+                else wpcomRevenue = (85 + (wpcomSites - 10) * 8.5) * 12;
+            }
+
+            let pressableRevenue = 0;
+            if (pressablePlan > 0) {
+                const pressablePrices = {
+                    "1": 25,
+                    "3": 45,
+                    "5": 60,
+                    "10": 90,
+                    "20": 155,
+                    "50": 350,
+                    "80": 545,
+                    "100": 675
+                };
+                pressableRevenue = pressablePrices[pressablePlan] * 12;
+            }
+            
+            const jetpackCompleteRevenue = jetpackComplete * 299;
+            const jetpackSecurityRevenue = jetpackSecurity * 199;
+            const jetpackBoostRevenue = jetpackBoost * 49;
+            
+            const wooSubscriptionsRevenue = wooSubscriptions * 199;
+            const wooBookingsRevenue = wooBookings * 249;
+            const wooPaymentsIAR = wooPaymentsTPV / 100; // $1 IAR for every $100 TPV
+            
+            // Group products by category
+            const hostingProducts = [
+                { name: "WordPress.com Hosting", quantity: wpcomSites, revenue: wpcomRevenue, iar: wpcomRevenue },
+                { name: "Pressable Hosting", quantity: pressablePlan > 0 ? 1 : 0, revenue: pressableRevenue, iar: pressableRevenue }
+            ];
+            
+            const wooPaymentsProducts = [
+                { name: "WooPayments TPV", quantity: wooPaymentsSites > 0 ? `${wooPaymentsSites} sites @ $${wooPaymentsTPVPerSite.toLocaleString()} each` : 0, revenue: wooPaymentsTPV, iar: wooPaymentsIAR }
+            ];
+            
+            const wooCommerceProducts = [
+                { name: "WooCommerce Subscriptions", quantity: wooSubscriptions, revenue: wooSubscriptionsRevenue, iar: wooSubscriptionsRevenue },
+                { name: "WooCommerce Bookings", quantity: wooBookings, revenue: wooBookingsRevenue, iar: wooBookingsRevenue }
+            ];
+            
+            const jetpackProducts = [
+                { name: "Jetpack Complete", quantity: jetpackComplete, revenue: jetpackCompleteRevenue, iar: jetpackCompleteRevenue },
+                { name: "Jetpack Security", quantity: jetpackSecurity, revenue: jetpackSecurityRevenue, iar: jetpackSecurityRevenue },
+                { name: "Jetpack Boost", quantity: jetpackBoost, revenue: jetpackBoostRevenue, iar: jetpackBoostRevenue }
+            ];
+            
+            // Combine all products for total calculation and table
+            const products = [
+                ...hostingProducts,
+                ...wooPaymentsProducts,
+                ...wooCommerceProducts,
+                ...jetpackProducts
+            ];
+            
+            // Calculate section totals (keeping the calculation for future use if needed)
+            const hostingTotal = hostingProducts.reduce((sum, product) => sum + product.iar, 0);
+            const wooPaymentsTotal = wooPaymentsProducts.reduce((sum, product) => sum + product.iar, 0);
+            const wooCommerceTotal = wooCommerceProducts.reduce((sum, product) => sum + product.iar, 0);
+            const jetpackTotal = jetpackProducts.reduce((sum, product) => sum + product.iar, 0);
+            
+            // Calculate total IAR
+            const totalIAR = products.reduce((sum, product) => sum + product.iar, 0);
+            
+            // Update the table
+            document.getElementById('total-iar').textContent = `$${totalIAR.toLocaleString()}`;
+            
+            const tableBody = document.getElementById('detail-table').querySelector('tbody');
+            tableBody.innerHTML = '';
+            
+            products.forEach(product => {
+                if (product.quantity && product.quantity !== 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.name}</td>
+                        <td>${product.quantity}</td>
+                        <td>$${product.revenue.toLocaleString()}</td>
+                        <td>$${product.iar.toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+            
+            // Update tier status
+            const activatedTier = document.getElementById('activated-tier');
+            const partnerTier = document.getElementById('partner-tier');
+            const proTier = document.getElementById('pro-tier');
+            
+            activatedTier.classList.remove('active');
+            partnerTier.classList.remove('active');
+            proTier.classList.remove('active');
+            
+            // Check if any product is selected
+            const hasProducts = products.some(product => product.quantity && product.quantity !== 0);
+            
+            if (hasProducts) {
+                if (totalIAR >= 5000) {
+                    activatedTier.classList.add('active');
+                    partnerTier.classList.add('active');
+                    proTier.classList.add('active');
+                } else if (totalIAR >= 1200) {
+                    activatedTier.classList.add('active');
+                    partnerTier.classList.add('active');
+                } else {
+                    activatedTier.classList.add('active');
+                }
+            }
+        }
+        
+        // Initialize calculation on page load and add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateRevenue();
+            
+            // Add event listeners to all inputs
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateRevenue);
+                input.addEventListener('change', calculateRevenue);
+            });
+            
+            // Add event listener to the select dropdown
+            document.getElementById('pressable-plan').addEventListener('change', calculateRevenue);
+            
+            // Add additional event listeners to ensure recalculation happens
+            inputs.forEach(input => {
+                input.addEventListener('blur', calculateRevenue);
+                input.addEventListener('keyup', calculateRevenue);
+            });
+        });
+    </script>
+</body>
+</html>
