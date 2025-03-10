@@ -16,10 +16,15 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             background-color: #021a24;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            display: none;
         }
         h1, h2, h3 {
             color: var(--primary-color);
@@ -30,12 +35,39 @@
         a{
             color: var(--primary-color);
         }
+        /* Removing calculator wrapper background */
         .calculator {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        
+        /* New two-column layout */
+        .two-column-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .left-column {
+            flex: 2;
+            min-width: 300px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 25px;
-            margin-bottom: 30px;
+        }
+        
+        .right-column {
+            flex: 3;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+        .product-selection-title{
+            display: none;
         }
         .product-group {
             margin-bottom: 20px;
@@ -54,6 +86,65 @@
             gap: 10px;
             margin-bottom: 10px;
             align-items: center;
+        }
+        
+        /* Added tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .tooltip .icon {
+            display: inline-flex;
+            width: 16px;
+            height: 16px;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 180px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            font-weight: normal;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tier h3{
+            font-size: 1em;
         }
         label {
             font-weight: 500;
@@ -105,7 +196,8 @@
             color: var(--secondary-color);
         }
         .tier-requirement {
-            font-weight: bold;
+            font-size: 14px;
+            color: #555;
         }
         table {
             width: 100%;
@@ -137,143 +229,477 @@
         .badge-pro {
             background-color: #114e30;
         }
+
+        /* Benefits section styling */
+        .tier-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tier-button {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            font-weight: 500;
+        }
+        .tier-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* MODIFIED: Benefits grid layout with responsive breakpoints */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* Three-column layout for large screens */
+        @media (min-width: 1200px) {
+            .benefits-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .benefit-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            transition: opacity 0.3s, filter 0.3s;
+        }
+        .benefit-card.inactive {
+            opacity: 0.6;
+            filter: grayscale(30%);
+        }
+        .benefit-card-header {
+            display: flex;
+            margin-bottom: 16px;
+            justify-content: space-between;
+        }
+        .benefit-card-icons {
+            display: flex;
+            gap: 5px;
+        }
+        .benefit-card-icon {
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .icon-emerging {
+            background-color: #6c57d2;
+        }
+        .icon-agency {
+            background-color: #022837;
+        }
+        .icon-pro {
+            background-color: #114e30;
+        }
+        .coming-soon {
+            display: inline-block;
+            background-color: #e7f5ff;
+            color: #0062cc;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .benefit-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .benefit-card-description {
+            color: #555;
+            font-size: 14px;
+        }
+        .benefit-card-notes {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #666;
+            padding-left: 20px;
+        }
+        
+        /* Title section */
+        .title-section {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        .title-section h2 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .two-column-layout {
+                flex-direction: column;
+            }
+            
+            .left-column, .right-column {
+                width: 100%;
+                margin-bottom: 25px;
+            }
+        }
+
+        /* Responsive adjustments for benefits grid */
+        @media (max-width: 1200px) and (min-width: 901px) {
+            /* Keep the 2:3 ratio for mid-sized screens */
+            .left-column {
+                flex: 2;
+            }
+            .right-column {
+                flex: 3;
+            }
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* For very wide screens, maximize the benefits display */
+        @media (min-width: 1700px) {
+            body {
+                max-width: 1600px;
+            }
+            .benefits-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Automattic for Agencies Partner Tier Calculator</h1>
+    <h1>Automattic for Agencies Partner Program</h1>
     
     <div class="calculator">
-        <div id="detailed-results">
-            <table id="detail-table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Annual Revenue</th>
-                        <th>IAR Contribution</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Will be populated by JavaScript -->
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"><strong>Total Influenced Revenue</strong></td>
-                        <td id="total-iar"><strong>$0</strong></td>
-                    </tr>
-                </tfoot>
-            </table>
+        <!-- New two-column layout container -->
+        <div class="two-column-layout">
+            <!-- Left column: Product Selection -->
+            <div class="left-column">
+                <h2 class="product-selection-title">Product Selection</h2>
+                
+                <div class="product-group">
+                    <h3>WordPress.com / Pressable Hosting</h3>
+                    
+                    <div class="product-row">
+                        <label for="wpcom-sites">
+                            WordPress.com Sites
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">Pricing varies based on number of sites. Starts at $25/month for 1 site.</span>
+                            </span>
+                        </label>
+                        <input type="number" id="wpcom-sites" min="0" value="0">
+                    </div>
+                    
+                    <div class="product-row">
+                        <label for="pressable-plan">Pressable Plan</label>
+                        <select id="pressable-plan" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; width: 120px;">
+                            <option value="0">None</option>
+                            <option value="1">1-Site</option>
+                            <option value="3">3-Sites</option>
+                            <option value="5">5-Sites</option>
+                            <option value="10">10-Sites</option>
+                            <option value="20">20-Sites</option>
+                            <option value="50">50-Sites</option>
+                            <option value="80">80-Sites</option>
+                            <option value="100">100-Sites</option>
+                        </select>
+                        <span class="tooltip">
+                            <span class="icon">i</span>
+                            <span class="tooltip-text">Plans range from $25/month for 1 site to $675/month for 100 sites</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="product-group">
+                    <h3>WooCommerce Payments</h3>
+                    
+                    <div class="product-row">
+                        <label for="woopayments-tpv-per-site">
+                            WooPayments TPV per site (annually)
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">$1 IAR for every $100 TPV</span>
+                            </span>
+                        </label>
+                        <input type="number" id="woopayments-tpv-per-site" min="0" value="0" step="1000">
+                        <span>$</span>
+                    </div>
+                    <div class="product-row">
+                        <label for="woopayments-sites">Number of WooPayments sites</label>
+                        <input type="number" id="woopayments-sites" min="0" value="0">
+                        <span>sites</span>
+                    </div>
+                </div>
+                
+                <div class="product-group">
+                    <h3>WooCommerce Extensions</h3>
+                    
+                    <div class="product-row">
+                        <label for="woo-subscriptions">
+                            WooCommerce Subscriptions
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">$199/year per license</span>
+                            </span>
+                        </label>
+                        <input type="number" id="woo-subscriptions" min="0" value="0">
+                    </div>
+                    
+                    <div class="product-row">
+                        <label for="woo-bookings">
+                            WooCommerce Bookings
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">$249/year per license</span>
+                            </span>
+                        </label>
+                        <input type="number" id="woo-bookings" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="product-group">
+                    <h3>Jetpack Products</h3>
+                    
+                    <div class="product-row">
+                        <label for="jetpack-complete">
+                            Jetpack Complete Licenses
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">$299/year per license</span>
+                            </span>
+                        </label>
+                        <input type="number" id="jetpack-complete" min="0" value="0">
+                    </div>
+                    
+                    <div class="product-row">
+                        <label for="jetpack-security">
+                            Jetpack Security Licenses
+                            <span class="tooltip">
+                                <span class="icon">i</span>
+                                <span class="tooltip-text">$199/year per license</span>
+                            </span>
+                        </label>
+                        <input type="number" id="jetpack-security" min="0" value="0">
+                    </div>
+                    
+                </div>
+                
+                <div id="detailed-results">
+                    <table id="detail-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Annual Revenue</th>
+                                <th>IAR Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>Total Influenced Revenue</strong></td>
+                                <td id="total-iar"><strong>$0</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="tier-status">
+                    <div class="tier" id="activated-tier">
+                        <h3>Account Activated</h3>
+                        <img src="https://agencies.automattic.com/calypso/images/emerging-partner-logo-small-27b2379706bf2dd7cb15.svg" alt="Emerging Partner Logo" />
+                        <p class="tier-requirement">Minimum Requirement: <br>At least one product purchase or referral per year</p>
+
+                    </div>
+                    
+                    <div class="tier" id="partner-tier">
+                        <h3>Agency Partner</h3>
+                        <img src="https://agencies.automattic.com/calypso/images/agency-partner-logo-small-d0a1f2f4ffa6a0f118e4.svg" alt="Agency partner Logo" />
+                        <p class="tier-requirement">Minimum Requirement: <br>$1,200+ annual IAR</p>
+                    </div>
+                    
+                    <div class="tier" id="pro-tier">
+                        <h3>Pro Partner</h3>
+                        <img src="https://agencies.automattic.com/calypso/images/pro-agency-partner-logo-small-a97b7339fd052091d0d1.svg" alt="Pro Partner Logo" />
+                        <p class="tier-requirement">Minimum Requirement: <br>$5,000+ annual IAR</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column: Benefits by Tier -->
+            <div class="right-column">
+                <div class="title-section">
+                    <h2>Benefits by Tier</h2>
+                </div>
+                
+                <div class="tier-selector">
+                    <button class="tier-button active" data-tier="emerging">Account Activated</button>
+                    <button class="tier-button" data-tier="agency">Agency Partner</button>
+                    <button class="tier-button" data-tier="pro">Pro Agency Partner</button>
+                </div>
+                
+                <div class="benefits-grid" id="benefits-grid">
+                    <!-- Benefits will be dynamically loaded here -->
+                </div>
+                <p>More information on partner tiers <a href="https://agencieshelp.automattic.com/knowledge-base/agency-tiering-benefits/" target="_blank" rel="noopener noreferrer">here.</a></p>
+            </div>
         </div>
-        
-        <div class="tier-status" style="margin: 30px 0;">
-            <div class="tier" id="activated-tier">
-                <span class="tier-badge badge-activated">Account Activated</span>
-                <h3>Account Activated</h3>
-                <p class="tier-requirement">Minimum Requirement: <br>At least one product purchase or referral per year</p>
-            </div>
-            
-            <div class="tier" id="partner-tier">
-                <span class="tier-badge badge-partner">Partner</span>
-                <h3>Agency Partner</h3>
-                <p class="tier-requirement">Minimum Requirement: <br>$1,200+ annual IAR</p>
-            </div>
-            
-            <div class="tier" id="pro-tier">
-                <span class="tier-badge badge-pro">Pro</span>
-                <h3>Pro Partner</h3>
-                <p class="tier-requirement">Minimum Requirement: <br>$5,000+ annual IAR</p>
-            </div>
-        </div>
-        
-        <h2>Product Selection</h2>
-        
-        <div class="product-group">
-            <h3>WordPress.com / Pressable Hosting</h3>
-            
-            <div class="product-row">
-                <label for="wpcom-sites">WordPress.com Sites:</label>
-                <input type="number" id="wpcom-sites" min="0" value="0">
-            </div>
-            
-            <div class="product-row">
-                <label for="pressable-plan">Pressable Plan:</label>
-                <select id="pressable-plan" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; width: 120px;">
-                    <option value="0">None</option>
-                    <option value="1">1-Site ($25/month)</option>
-                    <option value="3">3-Sites ($45/month)</option>
-                    <option value="5">5-Sites ($60/month)</option>
-                    <option value="10">10-Sites ($90/month)</option>
-                    <option value="20">20-Sites ($155/month)</option>
-                    <option value="50">50-Sites ($350/month)</option>
-                    <option value="80">80-Sites ($545/month)</option>
-                    <option value="100">100-Sites ($675/month)</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="product-group">
-            <h3>WooCommerce Payments</h3>
-            
-            <div class="product-row">
-                <label for="woopayments-tpv-per-site">WooPayments TPV per site (annually):</label>
-                <input type="number" id="woopayments-tpv-per-site" min="0" value="0" step="1000">
-                <span>($)</span>
-            </div>
-            <div class="product-row">
-                <label for="woopayments-sites">Number of WooPayments sites:</label>
-                <input type="number" id="woopayments-sites" min="0" value="0">
-                <span>sites</span>
-            </div>
-        </div>
-        
-        <div class="product-group">
-            <h3>WooCommerce Extensions</h3>
-            
-            <div class="product-row">
-                <label for="woo-subscriptions">WooCommerce Subscriptions:</label>
-                <input type="number" id="woo-subscriptions" min="0" value="0">
-                <span>($199/year per license)</span>
-            </div>
-            
-            <div class="product-row">
-                <label for="woo-bookings">WooCommerce Bookings:</label>
-                <input type="number" id="woo-bookings" min="0" value="0">
-                <span>($249/year per license)</span>
-            </div>
-        </div>
-        
-        <div class="product-group">
-            <h3>Jetpack Products</h3>
-            
-            <div class="product-row">
-                <label for="jetpack-complete">Jetpack Complete Licenses:</label>
-                <input type="number" id="jetpack-complete" min="0" value="0">
-                <span>($299/year per license)</span>
-            </div>
-            
-            <div class="product-row">
-                <label for="jetpack-security">Jetpack Security Licenses:</label>
-                <input type="number" id="jetpack-security" min="0" value="0">
-                <span>($199/year per license)</span>
-            </div>
-            
-            <div class="product-row">
-                <label for="jetpack-boost">Jetpack Boost Licenses:</label>
-                <input type="number" id="jetpack-boost" min="0" value="0">
-                <span>($49/year per license)</span>
-            </div>
-        </div>
-        <p>More information on partner tiers <a href="https://agencieshelp.automattic.com/knowledge-base/agency-tiering-benefits/" target="_blank" rel="noopener noreferrer">here.</a></p>
     </div>
     
     <script>
+        // Benefits data
+                    const benefits = [
+            {
+                id: 'tools',
+                title: 'Tools & Platforms',
+                description: 'Intuitive agency dashboard for streamlined client billing, and client and product management.',
+                tiers: ['emerging', 'agency', 'pro']
+            },
+            {
+                id: 'earning',
+                title: 'Earning Opportunities',
+                description: 'All partners get access to referral and reseller earning opportunities across all of Automattic\'s suite of products.',
+                tiers: ['emerging', 'agency', 'pro']
+            },
+            {
+                id: 'support',
+                title: 'Support',
+                description: 'All program partners receive unified program and product support. Pro partners receive access to priority support across Automattic products.',
+                tiers: ['emerging', 'agency', 'pro']
+            },
+            {
+                id: 'training',
+                title: 'Training & Resources',
+                description: 'Foundational product training, education and best practices on growing your agency, marketing materials, and advanced sales training*.',
+                tiers: ['emerging', 'agency', 'pro'],
+                notes: ['Pro partners eligible to receive advanced sales training and strategic consulting upon request.'],
+                comingSoon: true
+            },
+            {
+                id: 'networking',
+                title: 'Networking & Community',
+                description: 'Access Automattic\'s community platforms and network with like-minded agencies.',
+                tiers: ['emerging', 'agency', 'pro'],
+                comingSoon: true
+            },
+            {
+                id: 'directory',
+                title: 'Directory Visibility & Badging',
+                description: 'Eligible for inclusion in Automattic\'s agency directories and increased exposure to potential clients.',
+                tiers: ['agency', 'pro']
+            },
+            {
+                id: 'early-access',
+                title: 'Early Access',
+                description: 'Early access to new Automattic products and features (as available), and opportunities to contribute to the product roadmap.',
+                tiers: ['agency', 'pro']
+            },
+            {
+                id: 'co-marketing',
+                title: 'Co-Marketing',
+                description: 'Pro Agency Partners are eligible to participate in co-marketing activities with Automattic and our suite of brands, including case studies, co-branded campaigns, and other marketing opportunities as they arise.',
+                tiers: ['pro']
+            },
+            {
+                id: 'leads',
+                title: 'Pre-Qualified Sales Leads',
+                description: 'Pro Partners eligible to receive pre-qualified leads from Automattic sales teams when opportunities arise as well as leads generated through agency directory listings.',
+                tiers: ['pro']
+            },
+            {
+                id: 'partner-manager',
+                title: 'Dedicated Agency Partner Manager',
+                description: 'Pro partners receive access to an assigned agency partner manager for strategic guidance.',
+                tiers: ['pro']
+            },
+            {
+                id: 'advisory',
+                title: 'Automattic Advisory Board',
+                description: 'Pro partners are eligible to receive an invitation to the Automattic for Agencies advisory board to influence the program and Automattic\'s products.',
+                tiers: ['pro']
+            }
+        ];
+
+        // Function to render benefits
+        function renderBenefits(selectedTier = 'all') {
+            const benefitsGrid = document.getElementById('benefits-grid');
+            benefitsGrid.innerHTML = '';
+
+            benefits.forEach(benefit => {
+                // Create benefit card
+                const benefitCard = document.createElement('div');
+                benefitCard.className = 'benefit-card';
+
+                // Check if benefit is active for the selected tier
+                const isActive = benefit.tiers.includes(selectedTier);
+                if (!isActive) {
+                    benefitCard.classList.add('inactive');
+                }
+
+                // Create card content
+                let cardContent = `
+                    <div class="benefit-card-header">
+                        <div class="benefit-card-icons">
+                            ${benefit.tiers.includes('emerging') ? '<span class="benefit-card-icon icon-emerging"><img src="https://agencies.automattic.com/calypso/images/emerging-partner-logo-small-27b2379706bf2dd7cb15.svg" alt="Emerging Partner Logo" /></span>' : ''}
+                            ${benefit.tiers.includes('agency') ? '<span class="benefit-card-icon icon-agency"><img src="https://agencies.automattic.com/calypso/images/agency-partner-logo-small-d0a1f2f4ffa6a0f118e4.svg" alt="Agency partner Logo" /></span>' : ''}
+                            ${benefit.tiers.includes('pro') ? '<span class="benefit-card-icon icon-pro"><img src="https://agencies.automattic.com/calypso/images/pro-agency-partner-logo-small-a97b7339fd052091d0d1.svg" alt="Pro Partner Logo" /></span>' : ''}
+                        </div>
+                        ${benefit.comingSoon ? '<div class="coming-soon">Coming Soon</div>' : ''}
+                    </div>
+                    <div class="benefit-card-title">${benefit.title}</div>
+                    <div class="benefit-card-description">${benefit.description}</div>
+                `;
+
+                // Add notes if any
+                if (benefit.notes && benefit.notes.length > 0) {
+                    cardContent += '<ul class="benefit-card-notes">';
+                    benefit.notes.forEach(note => {
+                        cardContent += `<li>${note}</li>`;
+                    });
+                    cardContent += '</ul>';
+                }
+
+                benefitCard.innerHTML = cardContent;
+                benefitsGrid.appendChild(benefitCard);
+            });
+        }
+
+        // Initialize tier selector functionality
+        function initTierSelector() {
+            const tierButtons = document.querySelectorAll('.tier-button');
+            tierButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    tierButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Render benefits for selected tier
+                    renderBenefits(this.dataset.tier);
+                });
+            });
+        }
+
         function calculateRevenue() {
             // Get all the input values
             const wpcomSites = parseInt(document.getElementById('wpcom-sites').value) || 0;
             const pressablePlan = document.getElementById('pressable-plan').value;
             const jetpackComplete = parseInt(document.getElementById('jetpack-complete').value) || 0;
             const jetpackSecurity = parseInt(document.getElementById('jetpack-security').value) || 0;
-            const jetpackBoost = parseInt(document.getElementById('jetpack-boost').value) || 0;
             const wooSubscriptions = parseInt(document.getElementById('woo-subscriptions').value) || 0;
             const wooBookings = parseInt(document.getElementById('woo-bookings').value) || 0;
             const wooPaymentsTPVPerSite = parseInt(document.getElementById('woopayments-tpv-per-site').value) || 0;
@@ -313,8 +739,6 @@
             
             const jetpackCompleteRevenue = jetpackComplete * 299;
             const jetpackSecurityRevenue = jetpackSecurity * 199;
-            const jetpackBoostRevenue = jetpackBoost * 49;
-            
             const wooSubscriptionsRevenue = wooSubscriptions * 199;
             const wooBookingsRevenue = wooBookings * 249;
             const wooPaymentsIAR = wooPaymentsTPV / 100; // $1 IAR for every $100 TPV
@@ -336,8 +760,8 @@
             
             const jetpackProducts = [
                 { name: "Jetpack Complete", quantity: jetpackComplete, revenue: jetpackCompleteRevenue, iar: jetpackCompleteRevenue },
-                { name: "Jetpack Security", quantity: jetpackSecurity, revenue: jetpackSecurityRevenue, iar: jetpackSecurityRevenue },
-                { name: "Jetpack Boost", quantity: jetpackBoost, revenue: jetpackBoostRevenue, iar: jetpackBoostRevenue }
+                { name: "Jetpack Security", quantity: jetpackSecurity, revenue: jetpackSecurityRevenue, iar: jetpackSecurityRevenue }
+
             ];
             
             // Combine all products for total calculation and table
@@ -393,17 +817,40 @@
                     activatedTier.classList.add('active');
                     partnerTier.classList.add('active');
                     proTier.classList.add('active');
+                    
+                    // Set the tier selector to pro
+                    const proButton = document.querySelector('.tier-button[data-tier="pro"]');
+                    document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+                    proButton.classList.add('active');
+                    renderBenefits('pro');
                 } else if (totalIAR >= 1200) {
                     activatedTier.classList.add('active');
                     partnerTier.classList.add('active');
+                    
+                    // Set the tier selector to agency
+                    const agencyButton = document.querySelector('.tier-button[data-tier="agency"]');
+                    document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+                    agencyButton.classList.add('active');
+                    renderBenefits('agency');
                 } else {
                     activatedTier.classList.add('active');
+                    
+                    // Set the tier selector to account activated (emerging)
+                    const emergingButton = document.querySelector('.tier-button[data-tier="emerging"]');
+                    document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+                    emergingButton.classList.add('active');
+                    renderBenefits('emerging');
                 }
             }
         }
         
         // Initialize calculation on page load and add event listeners
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize benefits with 'emerging' as default
+            renderBenefits('emerging');
+            initTierSelector();
+            
+            // Initialize calculator
             calculateRevenue();
             
             // Add event listeners to all inputs
