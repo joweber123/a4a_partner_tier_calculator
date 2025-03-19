@@ -1,7 +1,7 @@
 # Automattic for Agencies Partner Tier Calculator
 
 ## Calculator Link
-https://joweber123.github.io/a4a_partner_tier_calculator/index.html
+https://joweber123.github.io/a4a_partner_tier_calculator
 
 ## Information
 A visual calulator of the information found here:
